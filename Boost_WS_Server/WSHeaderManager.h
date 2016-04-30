@@ -3,6 +3,8 @@
 #include <dataframe_manager.h>
 #include <handshake_manager.h>
 
+class WSIPacket;
+
 class WSHeaderManager : public HeaderManager
 {
 public:
@@ -21,9 +23,9 @@ protected:
 
 	boost::shared_ptr<std::vector<unsigned char>> encryptHeaderToBigEndian(boost::shared_ptr<OPacket> pack) override;
 
-	boost::shared_ptr<IPacket> decryptHeaderAsBigEndian(boost::shared_ptr<std::vector<unsigned char>> data, unsigned int size, IDType cID) override;
+	boost::shared_ptr<WSIPacket> decryptHeaderAsBigEndian(char* data, unsigned int size, IDType cID);
 
-	boost::shared_ptr<IPacket> decryptHeaderFromBigEndian(boost::shared_ptr<std::vector<unsigned char>> data, unsigned int size, IDType cID) override;
+	boost::shared_ptr<WSIPacket> decryptHeaderFromBigEndian(char* data, unsigned int size, IDType cID);
 
 	websocket::dataframe_manager* dfm;
 

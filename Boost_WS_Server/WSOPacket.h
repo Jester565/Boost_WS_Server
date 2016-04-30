@@ -1,6 +1,7 @@
 #pragma once
 #include <OPacket.h>
 #include <dataframe.h>
+#include <vector>
 
 class IPacket;
 

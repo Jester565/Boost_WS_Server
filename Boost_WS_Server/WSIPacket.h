@@ -1,9 +1,11 @@
 #pragma once
 #include <dataframe.h>
 #include <IPacket.h>
+#include <vector>
 
 class WSIPacket : public IPacket
 {
+	friend class WSHeaderManager;
 public:
 	WSIPacket();
 	

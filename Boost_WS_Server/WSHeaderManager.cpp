@@ -3,10 +3,13 @@
 #include "WSOPacket.h"
 #include "WSIPacket.h"
 #include <ClientManager.h>
+#include <cstdint>
 #include <PacketManager.h>
 #include <dataframe.h>
 #include <Server.h>
 #include <reply.h>
+#include <cassert>
+#include <string>
 
 
 WSHeaderManager::WSHeaderManager(Server* server)
@@ -23,7 +26,6 @@ boost::shared_ptr<std::vector<unsigned char>> WSHeaderManager::encryptHeader(boo
 
 boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(boost::shared_ptr<std::vector<unsigned char>> data, unsigned int size, IDType cID)
 {
-	std::cout << "Called" << std::endl;
 	if (handshakeComplete)
 	{
 		boost::shared_ptr<websocket::dataframe> dataframe = dfm->parse_data(*data, size);
@@ -36,8 +38,16 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(boost::shared_ptr<std:
 				{
 					dataArr[i] = dataframe->payload.data()[i];
 				}
-				bool serverRead = false;
-				boost::shared_ptr<IPacket> iPack = HeaderManager::decryptHeader(data, dataframe->payload_len, cID);
+				boost::shared_ptr<WSIPacket> iPack;
+				if (bEndian)
+				{
+					iPack = decryptHeaderAsBigEndian(dataArr, dataframe->payload_len, cID);
+				}
+				else
+				{
+					iPack = decryptHeaderFromBigEndian(dataArr, dataframe->payload_len, cID);
+				}
+				iPack->dataframe = dataframe;
 				return iPack;
 			}
 			else if (dataframe->opcode == websocket::dataframe::text_frame)
@@ -126,13 +136,14 @@ boost::shared_ptr<std::vector<unsigned char>> WSHeaderManager::encryptHeaderToBi
 	return boost::make_shared<std::vector<unsigned char>>(oPack->dataframe->to_buffer());
 }
 
-boost::shared_ptr<IPacket> WSHeaderManager::decryptHeaderAsBigEndian(boost::shared_ptr<std::vector<unsigned char>> data, unsigned int size, IDType cID)
+boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderAsBigEndian(char* data, unsigned int size, IDType cID)
 {
 	boost::shared_ptr<WSIPacket> iPack = boost::static_pointer_cast<WSIPacket>(server->createIPacket());
-	unsigned int headerPackSize = ((data->at(1) & 0xff) << 8) | (data->at(0) & 0xff);
-	std::vector<unsigned char> headerPackVect;
+	unsigned int headerPackSize = ((data[1] & 0xff) << 8) | (data[0] & 0xff);
+	char* headerPackArr = new char[headerPackSize];
+	strncpy(headerPackArr, data + HEADER_IN_SIZE, HEADER_IN_SIZE + headerPackSize);
 	ProtobufPackets::PackHeaderIn headerPackIn;
-	headerPackIn.ParseFromArray(headerPackVect.data(), headerPackVect.size());
+	headerPackIn.ParseFromArray(headerPackArr, headerPackSize);
 	iPack->sentFromID = cID;
 	iPack->locKey[0] = headerPackIn.lockey()[0];
 	iPack->locKey[1] = headerPackIn.lockey()[1];
@@ -142,17 +153,37 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeaderAsBigEndian(boost::shar
 	{
 		iPack->sendToClients->at(i) = headerPackIn.sendtoids().Get(i);
 	}
-	serverRead = headerPackIn.serverread();
+	iPack->serverRead = headerPackIn.serverread();
 	unsigned int mainPackDataSize = size - headerPackSize - HEADER_IN_SIZE;
-	boost::shared_ptr<std::string> mainPackDataStr = boost::make_shared<std::string>(header + HEADER_IN_SIZE + headerPackSize, size - (HEADER_IN_SIZE + headerPackSize));
-	iPack->dataFrame = dataFrame;
+	boost::shared_ptr<std::string> mainPackDataStr = boost::make_shared<std::string>(data + HEADER_IN_SIZE + headerPackSize, size - (HEADER_IN_SIZE + headerPackSize));
 	iPack->data = mainPackDataStr;
+	delete[] headerPackArr;
 	return iPack;
 }
 
-boost::shared_ptr<IPacket> WSHeaderManager::decryptHeaderFromBigEndian(boost::shared_ptr<std::vector<unsigned char>> data, unsigned int size, IDType cID)
+boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderFromBigEndian(char* data, unsigned int size, IDType cID)
 {
-	return boost::shared_ptr<IPacket>();
+	boost::shared_ptr<WSIPacket> iPack = boost::static_pointer_cast<WSIPacket>(server->createIPacket());
+	unsigned int headerPackSize = ((data[0] & 0xff) << 8) | (data[1] & 0xff);
+	char* headerPackArr = new char[headerPackSize];
+	strncpy(headerPackArr, data + HEADER_IN_SIZE, HEADER_IN_SIZE + headerPackSize);
+	ProtobufPackets::PackHeaderIn headerPackIn;
+	headerPackIn.ParseFromArray(headerPackArr, headerPackSize);
+	iPack->sentFromID = cID;
+	iPack->locKey[1] = headerPackIn.lockey()[0];
+	iPack->locKey[0] = headerPackIn.lockey()[1];
+	iPack->sendToClients = new std::vector <IDType>();
+	iPack->sendToClients->reserve(headerPackIn.sendtoids_size());
+	for (int i = 0; i < headerPackIn.sendtoids_size(); i++)
+	{
+		iPack->sendToClients->at(i) = headerPackIn.sendtoids().Get(i);
+	}
+	iPack->serverRead = headerPackIn.serverread();
+	unsigned int mainPackDataSize = size - headerPackSize - HEADER_IN_SIZE;
+	boost::shared_ptr<std::string> mainPackDataStr = boost::make_shared<std::string>(data + HEADER_IN_SIZE + headerPackSize, size - (HEADER_IN_SIZE + headerPackSize));
+	iPack->data = mainPackDataStr;
+	delete[] headerPackArr;
+	return iPack;
 }
 
 WSHeaderManager::~WSHeaderManager()
