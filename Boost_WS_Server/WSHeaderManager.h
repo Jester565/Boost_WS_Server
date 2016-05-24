@@ -12,9 +12,7 @@ public:
 	static const int HEADER_IN_SIZE = 2;
 	WSHeaderManager(Server* server);
 
-	boost::shared_ptr<std::vector<unsigned char>> encryptHeader(boost::shared_ptr<OPacket> pack) override;
-
-	boost::shared_ptr<IPacket> decryptHeader(boost::shared_ptr<std::vector<unsigned char>> data, unsigned int size, IDType cID) override;
+	boost::shared_ptr<IPacket> decryptHeader(std::vector<unsigned char>* data, unsigned int size, IDType cID) override;
 
 	~WSHeaderManager();
 

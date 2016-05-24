@@ -105,7 +105,7 @@ void protobuf_AddDesc_PackFW_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\014PackFW.proto\022\017ProtobufPackets\"E\n\014PackH"
     "eaderIn\022\022\n\nserverRead\030\001 \001(\010\022\016\n\006locKey\030\002 "
-    "\001(\t\022\021\n\tsendToIDs\030\003 \003(\r\"3\n\rPackHeaderOut\022"
+    "\001(\t\022\021\n\tsendToIDs\030\003 \003(\005\"3\n\rPackHeaderOut\022"
     "\016\n\006locKey\030\001 \001(\t\022\022\n\nsentFromID\030\002 \001(\r", 155);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "PackFW.proto", &protobuf_RegisterTypes);
@@ -257,16 +257,16 @@ bool PackHeaderIn::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated uint32 sendToIDs = 3;
+      // repeated int32 sendToIDs = 3;
       case 3: {
         if (tag == 24) {
          parse_sendToIDs:
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  1, 24, input, this->mutable_sendtoids())));
         } else if (tag == 26) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitiveNoInline<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_sendtoids())));
         } else {
           goto handle_unusual;
@@ -316,9 +316,9 @@ void PackHeaderIn::SerializeWithCachedSizes(
       2, this->lockey(), output);
   }
 
-  // repeated uint32 sendToIDs = 3;
+  // repeated int32 sendToIDs = 3;
   for (int i = 0; i < this->sendtoids_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(
       3, this->sendtoids(i), output);
   }
 
@@ -348,10 +348,10 @@ void PackHeaderIn::SerializeWithCachedSizes(
         2, this->lockey(), target);
   }
 
-  // repeated uint32 sendToIDs = 3;
+  // repeated int32 sendToIDs = 3;
   for (int i = 0; i < this->sendtoids_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteUInt32ToArray(3, this->sendtoids(i), target);
+      WriteInt32ToArray(3, this->sendtoids(i), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -379,12 +379,12 @@ int PackHeaderIn::ByteSize() const {
     }
 
   }
-  // repeated uint32 sendToIDs = 3;
+  // repeated int32 sendToIDs = 3;
   {
     int data_size = 0;
     for (int i = 0; i < this->sendtoids_size(); i++) {
       data_size += ::google::protobuf::internal::WireFormatLite::
-        UInt32Size(this->sendtoids(i));
+        Int32Size(this->sendtoids(i));
     }
     total_size += 1 * this->sendtoids_size() + data_size;
   }
@@ -522,7 +522,7 @@ void PackHeaderIn::clear_lockey() {
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:ProtobufPackets.PackHeaderIn.locKey)
 }
- void PackHeaderIn::set_lockey(const char* value, unsigned int size) {
+ void PackHeaderIn::set_lockey(const char* value, size_t size) {
   set_has_lockey();
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
@@ -547,31 +547,31 @@ void PackHeaderIn::clear_lockey() {
   // @@protoc_insertion_point(field_set_allocated:ProtobufPackets.PackHeaderIn.locKey)
 }
 
-// repeated uint32 sendToIDs = 3;
+// repeated int32 sendToIDs = 3;
 int PackHeaderIn::sendtoids_size() const {
   return sendtoids_.size();
 }
 void PackHeaderIn::clear_sendtoids() {
   sendtoids_.Clear();
 }
- ::google::protobuf::uint32 PackHeaderIn::sendtoids(int index) const {
+ ::google::protobuf::int32 PackHeaderIn::sendtoids(int index) const {
   // @@protoc_insertion_point(field_get:ProtobufPackets.PackHeaderIn.sendToIDs)
   return sendtoids_.Get(index);
 }
- void PackHeaderIn::set_sendtoids(int index, ::google::protobuf::uint32 value) {
+ void PackHeaderIn::set_sendtoids(int index, ::google::protobuf::int32 value) {
   sendtoids_.Set(index, value);
   // @@protoc_insertion_point(field_set:ProtobufPackets.PackHeaderIn.sendToIDs)
 }
- void PackHeaderIn::add_sendtoids(::google::protobuf::uint32 value) {
+ void PackHeaderIn::add_sendtoids(::google::protobuf::int32 value) {
   sendtoids_.Add(value);
   // @@protoc_insertion_point(field_add:ProtobufPackets.PackHeaderIn.sendToIDs)
 }
- const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+ const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
 PackHeaderIn::sendtoids() const {
   // @@protoc_insertion_point(field_list:ProtobufPackets.PackHeaderIn.sendToIDs)
   return sendtoids_;
 }
- ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+ ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
 PackHeaderIn::mutable_sendtoids() {
   // @@protoc_insertion_point(field_mutable_list:ProtobufPackets.PackHeaderIn.sendToIDs)
   return &sendtoids_;
@@ -901,7 +901,7 @@ void PackHeaderOut::clear_lockey() {
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:ProtobufPackets.PackHeaderOut.locKey)
 }
- void PackHeaderOut::set_lockey(const char* value, unsigned int size) {
+ void PackHeaderOut::set_lockey(const char* value, size_t size) {
   set_has_lockey();
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

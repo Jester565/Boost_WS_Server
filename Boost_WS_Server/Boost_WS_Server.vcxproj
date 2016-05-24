@@ -44,7 +44,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -67,9 +67,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="HTMLHandle.props" />
-    <Import Project="BoostServer.props" />
     <Import Project="..\..\BoostHTMLServer2\BoostServer\Boost(x64)Release.props" />
     <Import Project="..\..\BoostHTMLServer2\BoostServer\GPBRelease.props" />
+    <Import Project="BoostServer.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -120,7 +120,6 @@
   <ItemGroup>
     <ClCompile Include="Packets\PackFW.pb.cc" />
     <ClCompile Include="Packets\Setup.pb.cc" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="WSHeaderManager.cpp" />
     <ClCompile Include="WSIPacket.cpp" />
     <ClCompile Include="WSOPacket.cpp" />

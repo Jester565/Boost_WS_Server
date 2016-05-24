@@ -1,28 +1,27 @@
 #pragma once
 #include <dataframe.h>
+#include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
 #include <IPacket.h>
 #include <vector>
+#include <iostream>
 
 class WSIPacket : public IPacket
 {
 	friend class WSHeaderManager;
 public:
 	WSIPacket();
-	
-	const boost::shared_ptr<std::string> getData() const
-	{
-		return data;
-	}
 
 	boost::shared_ptr<websocket::dataframe> getDataframe()
 	{
-		return dataframe;
+		return dataf;
 	}
 
-	~WSIPacket();
+	virtual ~WSIPacket();
 
-private:
-	boost::shared_ptr<std::string> data;
-	boost::shared_ptr<websocket::dataframe> dataframe;
+protected:
+	void setDataframe(boost::shared_ptr<websocket::dataframe> df);
+
+	boost::shared_ptr<websocket::dataframe> dataf;
 };
 

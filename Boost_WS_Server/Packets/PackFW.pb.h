@@ -119,21 +119,21 @@ class PackHeaderIn : public ::google::protobuf::Message {
   const ::std::string& lockey() const;
   void set_lockey(const ::std::string& value);
   void set_lockey(const char* value);
-  void set_lockey(const char* value, unsigned int size);
+  void set_lockey(const char* value, size_t size);
   ::std::string* mutable_lockey();
   ::std::string* release_lockey();
   void set_allocated_lockey(::std::string* lockey);
 
-  // repeated uint32 sendToIDs = 3;
+  // repeated int32 sendToIDs = 3;
   int sendtoids_size() const;
   void clear_sendtoids();
   static const int kSendToIDsFieldNumber = 3;
-  ::google::protobuf::uint32 sendtoids(int index) const;
-  void set_sendtoids(int index, ::google::protobuf::uint32 value);
-  void add_sendtoids(::google::protobuf::uint32 value);
-  const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+  ::google::protobuf::int32 sendtoids(int index) const;
+  void set_sendtoids(int index, ::google::protobuf::int32 value);
+  void add_sendtoids(::google::protobuf::int32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
       sendtoids() const;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
       mutable_sendtoids();
 
   // @@protoc_insertion_point(class_scope:ProtobufPackets.PackHeaderIn)
@@ -147,7 +147,7 @@ class PackHeaderIn : public ::google::protobuf::Message {
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr lockey_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > sendtoids_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > sendtoids_;
   bool serverread_;
   friend void  protobuf_AddDesc_PackFW_2eproto();
   friend void protobuf_AssignDesc_PackFW_2eproto();
@@ -229,7 +229,7 @@ class PackHeaderOut : public ::google::protobuf::Message {
   const ::std::string& lockey() const;
   void set_lockey(const ::std::string& value);
   void set_lockey(const char* value);
-  void set_lockey(const char* value, unsigned int size);
+  void set_lockey(const char* value, size_t size);
   ::std::string* mutable_lockey();
   ::std::string* release_lockey();
   void set_allocated_lockey(::std::string* lockey);
@@ -320,7 +320,7 @@ inline void PackHeaderIn::set_lockey(const char* value) {
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:ProtobufPackets.PackHeaderIn.locKey)
 }
-inline void PackHeaderIn::set_lockey(const char* value, unsigned int size) {
+inline void PackHeaderIn::set_lockey(const char* value, size_t size) {
   set_has_lockey();
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
@@ -345,31 +345,31 @@ inline void PackHeaderIn::set_allocated_lockey(::std::string* lockey) {
   // @@protoc_insertion_point(field_set_allocated:ProtobufPackets.PackHeaderIn.locKey)
 }
 
-// repeated uint32 sendToIDs = 3;
+// repeated int32 sendToIDs = 3;
 inline int PackHeaderIn::sendtoids_size() const {
   return sendtoids_.size();
 }
 inline void PackHeaderIn::clear_sendtoids() {
   sendtoids_.Clear();
 }
-inline ::google::protobuf::uint32 PackHeaderIn::sendtoids(int index) const {
+inline ::google::protobuf::int32 PackHeaderIn::sendtoids(int index) const {
   // @@protoc_insertion_point(field_get:ProtobufPackets.PackHeaderIn.sendToIDs)
   return sendtoids_.Get(index);
 }
-inline void PackHeaderIn::set_sendtoids(int index, ::google::protobuf::uint32 value) {
+inline void PackHeaderIn::set_sendtoids(int index, ::google::protobuf::int32 value) {
   sendtoids_.Set(index, value);
   // @@protoc_insertion_point(field_set:ProtobufPackets.PackHeaderIn.sendToIDs)
 }
-inline void PackHeaderIn::add_sendtoids(::google::protobuf::uint32 value) {
+inline void PackHeaderIn::add_sendtoids(::google::protobuf::int32 value) {
   sendtoids_.Add(value);
   // @@protoc_insertion_point(field_add:ProtobufPackets.PackHeaderIn.sendToIDs)
 }
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
 PackHeaderIn::sendtoids() const {
   // @@protoc_insertion_point(field_list:ProtobufPackets.PackHeaderIn.sendToIDs)
   return sendtoids_;
 }
-inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
 PackHeaderIn::mutable_sendtoids() {
   // @@protoc_insertion_point(field_mutable_list:ProtobufPackets.PackHeaderIn.sendToIDs)
   return &sendtoids_;
@@ -407,7 +407,7 @@ inline void PackHeaderOut::set_lockey(const char* value) {
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:ProtobufPackets.PackHeaderOut.locKey)
 }
-inline void PackHeaderOut::set_lockey(const char* value, unsigned int size) {
+inline void PackHeaderOut::set_lockey(const char* value, size_t size) {
   set_has_lockey();
   lockey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

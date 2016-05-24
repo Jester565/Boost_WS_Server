@@ -11,12 +11,7 @@ class WSOPacket : public OPacket
 public:
 	WSOPacket(IPacket* iPack, bool copyData);
 
-	bool setData(boost::shared_ptr<std::string> data)
-	{
-		bool reset = !(data == nullptr);
-		this->data = data;
-		return reset;
-	}
+	WSOPacket(const char* loc, IDType senderID, IDType sendToID);
 
 	boost::shared_ptr<websocket::dataframe> getDataframe()
 	{
@@ -27,6 +22,5 @@ public:
 
 protected:
 	boost::shared_ptr<websocket::dataframe> dataframe;
-	boost::shared_ptr<std::string> data;
 };
 
