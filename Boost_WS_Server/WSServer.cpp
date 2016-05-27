@@ -1,7 +1,5 @@
 #include "WSServer.h"
 
-//test 123 asdf
-
 WSServer::WSServer()
 	:Server()
 {
