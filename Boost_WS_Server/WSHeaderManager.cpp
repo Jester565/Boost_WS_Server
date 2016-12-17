@@ -19,11 +19,11 @@ WSHeaderManager::WSHeaderManager(Server* server)
 	hsm = new websocket::handshake_manager();
 }
 
-boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(std::vector<unsigned char>* data, unsigned int size, IDType cID)
+boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, unsigned int size, IDType cID)
 {
 	if (handshakeComplete)
 	{
-		boost::shared_ptr<websocket::dataframe> df = dfm->parse_data(*data, size);
+		boost::shared_ptr<websocket::dataframe> df = dfm->parse_data(data, size);
 		if (df != nullptr)
 		{
 			if (df->opcode == websocket::dataframe::binary_frame)
@@ -63,7 +63,7 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(std::vector<unsigned c
 	}
 	else
 	{
-		websocket::reply rep = hsm->parse_handshake(*data, size);
+		websocket::reply rep = hsm->parse_handshake(data, size);
 		if (rep.status != websocket::reply::bad_request)
 		{
 			handshakeComplete = true;

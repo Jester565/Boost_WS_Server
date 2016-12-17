@@ -1,7 +1,7 @@
 #include "WSServer.h"
 
 WSServer::WSServer()
-	:Server()
+	:Server(boost::asio::ip::tcp::v4())
 {
 }
 

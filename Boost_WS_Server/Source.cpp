@@ -5,5 +5,7 @@ int main()
 {
 	Server* server = new WSServer();
 	server->createManagers();
-	server->syncInitServer(24560);
+	server->run(8443);
+	std::string str;
+	std::cin >> str;
 }
