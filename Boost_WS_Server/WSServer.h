@@ -5,7 +5,7 @@
 class WSServer : public Server
 {
 public:
-	WSServer();
+	WSServer(boost::asio::ip::tcp ipVersion);
 
 	HeaderManager* createHeaderManager() override;
 
