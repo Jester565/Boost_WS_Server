@@ -10,6 +10,9 @@
 *.vcxproj
 *.sln
 
+# Linux-specific files
+*.o
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
