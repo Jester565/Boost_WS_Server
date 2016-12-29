@@ -12,6 +12,7 @@
 
 # Linux-specific files
 *.o
+*.a
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -29,6 +29,7 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, u
 			if (df->opcode == websocket::dataframe::binary_frame)
 			{
 				char* dataArr = new char[df->payload_len];
+				std::cout << "PACK PAYLOAD SIZE: " << (int)df->payload_len << std::endl;
 				for (int i = 0; i < df->payload_len; i++)
 				{
 					dataArr[i] = df->payload.data()[i];
