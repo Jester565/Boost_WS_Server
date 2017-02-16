@@ -11,6 +11,8 @@ class WSOPacket : public OPacket
 public:
 	WSOPacket(IPacket* iPack, bool copyData);
 
+	WSOPacket(const char* loc, IDType senderID = 0);
+
 	WSOPacket(const char* loc, IDType senderID, IDType sendToID);
 
 	boost::shared_ptr<websocket::dataframe> getDataframe()

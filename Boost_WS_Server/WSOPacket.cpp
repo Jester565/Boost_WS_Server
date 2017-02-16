@@ -12,10 +12,22 @@ WSOPacket::WSOPacket(IPacket* iPack, bool copyData)
 	}
 }
 
+WSOPacket::WSOPacket(const char * loc, IDType senderID)
+		:OPacket(loc, senderID)
+{
+		dataframe = boost::make_shared<websocket::dataframe>();
+}
+
 WSOPacket::WSOPacket(const char* loc, IDType senderID, IDType sendToID)
 	:OPacket(loc, senderID, sendToID)
 {
 	dataframe = boost::make_shared<websocket::dataframe>();
+}
+
+WSOPacket::WSOPacket(const char* loc, IDType senderID, IDType sendToID)
+		: OPacket(loc, senderID, sendToID)
+{
+		dataframe = boost::make_shared<websocket::dataframe>();
 }
 
 WSOPacket::~WSOPacket()
