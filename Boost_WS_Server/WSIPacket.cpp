@@ -13,5 +13,5 @@ void WSIPacket::setDataframe(boost::shared_ptr<websocket::dataframe> df)
 
 WSIPacket::~WSIPacket()
 {
-		std::cout << "WSIPacket destructor called" << std::endl;
+	
 }

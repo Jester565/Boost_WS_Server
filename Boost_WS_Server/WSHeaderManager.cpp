@@ -10,7 +10,7 @@
 #include <reply.h>
 #include <cassert>
 #include <string>
-#include <iostream> //temp include
+#include <Logger.h>
 
 WSHeaderManager::WSHeaderManager(Server* server)
 		:HeaderManager(server), handshakeComplete(false)
@@ -59,16 +59,16 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, u
 						}
 						else if (df->opcode == websocket::dataframe::text_frame)
 						{
-								std::cout << "text_frame was received: " << std::string(df->payload.at(0), df->payload_len) << std::endl;
+							Logger::Log(LOG_LEVEL::DebugHigh, "text_frame was received: " + std::string(df->payload.at(0), df->payload_len));
 						}
 						else if (df->opcode == websocket::dataframe::connection_close)
 						{
-								std::cout << "connection was closed" << std::endl;
+							LOG_PRINTF(LOG_LEVEL::DebugHigh, "dataframe requested closing of connection %d", cID);
 								server->getClientManager()->removeClient(cID);
 						}
 						else
 						{
-								std::cerr << "A packet with opcode: " << df->opcode << " was received" << std::endl;
+							Logger::Log(LOG_LEVEL::DebugLow, "A packet with opcode was received with opcode: " + df->opcode);
 						}
 						}
 				}
@@ -122,7 +122,6 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, u
 				ProtobufPackets::PackHeaderOut headerPackOut;
 				headerPackOut.set_lockey(oPack->getLocKey());
 				headerPackOut.set_sentfromid(oPack->getSenderID());
-				std::cout << "SENDER_ID: " << oPack->getSenderID() << std::endl;
 				std::string headerPackStr = headerPackOut.SerializeAsString();
 				char header[HEADER_OUT_SIZE];
 				header[1] = headerPackStr.size() & 0xff;
@@ -157,7 +156,6 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, u
 				for (int i = 0; i < headerPackIn.sendtoids_size(); i++)
 				{
 						iPack->sendToClients.push_back(headerPackIn.sendtoids().Get(i));
-						std::cout << "SEND_TO_CIENT: " << iPack->sendToClients.at(i) << std::endl;
 				}
 				iPack->serverRead = headerPackIn.serverread();
 				unsigned int mainPackDataSize = size - headerPackSize - HEADER_IN_SIZE;
