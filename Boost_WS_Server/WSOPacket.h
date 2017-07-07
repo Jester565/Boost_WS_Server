@@ -1,3 +1,9 @@
+/*
+Because we are working with websockets, we want to store the dataframe
+so we can access status codes and other information. We also need 
+the dataframe later on for sending
+*/
+
 #pragma once
 #include <OPacket.h>
 #include <dataframe.h>

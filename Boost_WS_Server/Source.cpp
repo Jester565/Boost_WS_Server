@@ -1,3 +1,8 @@
+/*
+This is meant to be a library, but if you build it as an executable, this
+simple server will run
+*/
+
 #include "WSServer.h"
 #include <iostream>
 

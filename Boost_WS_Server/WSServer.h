@@ -1,3 +1,7 @@
+/*
+The websocket server. We override createHeaderManager so we can use WSHeaderManager instead
+*/
+
 #pragma once
 #include "WSHeaderManager.h"
 #include <Server.h>

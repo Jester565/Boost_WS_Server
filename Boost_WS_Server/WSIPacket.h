@@ -1,3 +1,8 @@
+/*
+Because we are working with websockets, we want to store the dataframe
+so we can access status codes and other information
+*/
+
 #pragma once
 #include <dataframe.h>
 #include <boost/make_shared.hpp>
