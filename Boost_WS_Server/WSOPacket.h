@@ -25,4 +25,3 @@ public:
 protected:
 	boost::shared_ptr<websocket::dataframe> dataframe;
 };
-

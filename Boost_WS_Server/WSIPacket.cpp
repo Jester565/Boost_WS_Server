@@ -3,7 +3,6 @@
 WSIPacket::WSIPacket()
 	:IPacket()
 {
-
 }
 
 void WSIPacket::setDataframe(boost::shared_ptr<websocket::dataframe> df)
@@ -13,5 +12,4 @@ void WSIPacket::setDataframe(boost::shared_ptr<websocket::dataframe> df)
 
 WSIPacket::~WSIPacket()
 {
-	
 }
