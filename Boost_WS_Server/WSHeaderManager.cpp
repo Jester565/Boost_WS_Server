@@ -175,9 +175,7 @@ boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderAsBigEndian(char* dat
 	headerPackIn.ParseFromArray(data + HEADER_IN_SIZE, headerPackSize);
 	//Start creating the IPacket
 	iPack->sender = sender;
-	iPack->locKey[0] = headerPackIn.lockey()[0];
-	iPack->locKey[1] = headerPackIn.lockey()[1];
-	iPack->locKey[2] = '\0';
+	iPack->locKey = headerPackIn.lockey();
 	//Extract sendToClients from the packet
 	for (int i = 0; i < headerPackIn.sendtoids_size(); i++)
 	{
@@ -198,9 +196,7 @@ boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderFromBigEndian(char* d
 	ProtobufPackets::PackHeaderIn headerPackIn;
 	headerPackIn.ParseFromArray(data + HEADER_IN_SIZE, headerPackSize);
 	iPack->sender = sender;
-	iPack->locKey[0] = headerPackIn.lockey()[0];
-	iPack->locKey[1] = headerPackIn.lockey()[1];
-	iPack->locKey[2] = '\0';
+	iPack->locKey = headerPackIn.lockey();
 	for (int i = 0; i < headerPackIn.sendtoids_size(); i++)
 	{
 		iPack->sendToClients.push_back(headerPackIn.sendtoids().Get(i));
