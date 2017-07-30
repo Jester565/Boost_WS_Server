@@ -2,6 +2,7 @@
 #include "Packets/PackFW.pb.h"
 #include "WSOPacket.h"
 #include "WSIPacket.h"
+#include <Client.h>
 #include <ClientManager.h>
 #include <cstdint>
 #include <PacketManager.h>
@@ -19,7 +20,7 @@ WSHeaderManager::WSHeaderManager(Server* server)
 	hsm = new websocket::handshake_manager();
 }
 
-boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, unsigned int size, IDType cID)
+boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, unsigned int size, ClientPtr sender)
 {
 	if (handshakeComplete)  //If we have completed the websocket handshake
 	{
@@ -54,11 +55,11 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, u
 				boost::shared_ptr<WSIPacket> iPack;
 				if (bEndian)
 				{
-					iPack = decryptHeaderAsBigEndian(dataArr, payloadLen, cID);
+					iPack = decryptHeaderAsBigEndian(dataArr, payloadLen, sender);
 				}
 				else
 				{
-					iPack = decryptHeaderFromBigEndian(dataArr, payloadLen, cID);
+					iPack = decryptHeaderFromBigEndian(dataArr, payloadLen, sender);
 				}
 				//Set the dataframe of the packet so opcode can be accessed
 				iPack->setDataframe(df);
@@ -72,8 +73,8 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, u
 			}
 			else if (df->opcode == websocket::dataframe::connection_close)
 			{
-				LOG_PRINTF(LOG_LEVEL::DebugHigh, "dataframe requested closing of connection %d", cID);
-				server->getClientManager()->removeClient(cID);
+				LOG_PRINTF(LOG_LEVEL::DebugHigh, "dataframe requested closing of connection %d", sender);
+				server->getClientManager()->removeClient(sender->getID());
 			}
 			else
 			{
@@ -91,7 +92,7 @@ boost::shared_ptr<IPacket> WSHeaderManager::decryptHeader(unsigned char* data, u
 		}
 		boost::shared_ptr<std::vector<unsigned char>> data = boost::make_shared<std::vector<unsigned char>>(rep.to_buffer());
 		//send the handshake back to the websocket as raw data
-		server->getClientManager()->send(data, cID);
+		server->getClientManager()->send(data, sender->getID());
 	}
 	return nullptr;
 }
@@ -164,7 +165,7 @@ boost::shared_ptr<std::vector<unsigned char>> WSHeaderManager::encryptHeaderToBi
 	return boost::make_shared<std::vector<unsigned char>>(oPack->dataframe->to_buffer());
 }
 
-boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderAsBigEndian(char* data, unsigned int size, IDType cID)
+boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderAsBigEndian(char* data, unsigned int size, ClientPtr sender)
 {
 	boost::shared_ptr<WSIPacket> iPack = boost::make_shared<WSIPacket>();
 	//Get the size of the protoHeaderPacket from the first 2 bytes
@@ -173,7 +174,7 @@ boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderAsBigEndian(char* dat
 	//Parse PackHeaderIn from the data
 	headerPackIn.ParseFromArray(data + HEADER_IN_SIZE, headerPackSize);
 	//Start creating the IPacket
-	iPack->sentFromID = cID;
+	iPack->sender = sender;
 	iPack->locKey[0] = headerPackIn.lockey()[0];
 	iPack->locKey[1] = headerPackIn.lockey()[1];
 	iPack->locKey[2] = '\0';
@@ -190,13 +191,13 @@ boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderAsBigEndian(char* dat
 	return iPack;
 }
 
-boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderFromBigEndian(char* data, unsigned int size, IDType cID)
+boost::shared_ptr<WSIPacket> WSHeaderManager::decryptHeaderFromBigEndian(char* data, unsigned int size, ClientPtr sender)
 {
 	boost::shared_ptr<WSIPacket> iPack = boost::make_shared<WSIPacket>();
 	unsigned int headerPackSize = ((data[0] & 0xff) << 8) | (data[1] & 0xff);
 	ProtobufPackets::PackHeaderIn headerPackIn;
 	headerPackIn.ParseFromArray(data + HEADER_IN_SIZE, headerPackSize);
-	iPack->sentFromID = cID;
+	iPack->sender = sender;
 	iPack->locKey[0] = headerPackIn.lockey()[0];
 	iPack->locKey[1] = headerPackIn.lockey()[1];
 	iPack->locKey[2] = '\0';

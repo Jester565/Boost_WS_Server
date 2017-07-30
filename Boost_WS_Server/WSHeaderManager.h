@@ -30,7 +30,7 @@ public:
 	WSHeaderManager(Server* server);
 
 	//Override decryptHeader because bigEndian and littleEndian can shar some code, that code being the parsing of the websocket header
-	boost::shared_ptr<IPacket> decryptHeader(unsigned char* data, unsigned int size, IDType cID) override;
+	boost::shared_ptr<IPacket> decryptHeader(unsigned char* data, unsigned int size, ClientPtr cID) override;
 
 	//Destroy header parsing classes
 	~WSHeaderManager();
@@ -40,9 +40,9 @@ protected:
 
 	boost::shared_ptr<std::vector<unsigned char>> encryptHeaderToBigEndian(boost::shared_ptr<OPacket> pack) override;
 
-	boost::shared_ptr<WSIPacket> decryptHeaderAsBigEndian(char* data, unsigned int size, IDType cID);
+	boost::shared_ptr<WSIPacket> decryptHeaderAsBigEndian(char* data, unsigned int size, ClientPtr sender);
 
-	boost::shared_ptr<WSIPacket> decryptHeaderFromBigEndian(char* data, unsigned int size, IDType cID);
+	boost::shared_ptr<WSIPacket> decryptHeaderFromBigEndian(char* data, unsigned int size, ClientPtr);
 
 	/*
 	The websocket protocol contains an extra step before data can be sent: the handshake
